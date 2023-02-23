@@ -4,8 +4,8 @@
     gap: 20px;
     padding: 30px 40px;
     margin: 0 auto;
-    margin-top: 20%;
-    max-width: 350px;
+    max-width: 400px;
+    width: 100%;
     border: 1px solid $color-shadow;
     border-radius: 10px;
     box-shadow: 0 0 10px 2px $color-shadow;
@@ -30,7 +30,11 @@
         padding: 5px 10px;
         color: $color-white;
         outline: none !important;
+        transition: box-shadow .2s ease;
 
+        &::placeholder {
+            color: $color-shadow;
+        }
         &:focus {
             box-shadow: 0 0 3px 2px $color-shadow;
         }
@@ -53,5 +57,10 @@
     &-span {
         color: $color-red;
         letter-spacing: .05em;
+        display: none;
+
+        &.error {
+            display: block;
+        }
     }
 }

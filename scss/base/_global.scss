@@ -1,10 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+* {
+	box-sizing: border-box;
+    font-family: $ff-poppins;
+}
 body {
     background: $color-black;
     color: $color-white;
-    font-family: monospace, monospace;
+    font-family: $ff-poppins;
     font-size: 15px;
+}
+p {
+    margin-bottom: 5px;
 }
 .container {
     max-width: 1024px;
     margin: 0 auto;
+}
+.content {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
