@@ -1,57 +1,88 @@
 import { Validator } from './components/validator.js';
 import { loginFormConfig } from './components/form-config.js';
 
-let form = document.login;
-let elements = form.elements;
+let forms = document.querySelectorAll('form');
 
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
+forms.forEach((form) => {
+    let elements = form.elements;
+    let errorChecker = false;
+    let successChecker = false;
     
-    [...elements].forEach( element => {
-        if(element.type !== 'submit') {
-            let errorBox = form.querySelector(`[data-for="${element.name}"]`);
-            errorBox.innerHTML = '';
-            element.classList.remove('error');
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        [...elements].forEach( element => {
+            if(element.type !== 'submit') {
+                let errorBox = form.querySelector(`[data-for="${element.name}"]`);
+    
+                errorChecker = false;
+                successChecker = false;
+    
+                stateChecker(element);
+                changeHTML(errorBox, '')
+            }
+        })
+    
+        let isValid = Validator.validate(form, loginFormConfig);
+    
+        if(!isValid) {
+            let errors = Validator.getErrors(form.name);
+    
+            Object.entries(errors).forEach(([name, errorObject]) => {
+                let errorBox = form.querySelector(`[data-for="${name}"]`);
+                errorChecker = true;
+                stateChecker(elements[name], errorBox);
+    
+                let errorMessage = Object.values(errorObject).map( message => `<p>${message}</p>`).join('');
+                changeHTML(errorBox, errorMessage)
+            });
+        };
+    });
+    
+    
+    form.addEventListener('input', (e) => {
+        let target = e.target;
+        let errorBox = form.querySelector(`[data-for="${target.name}"]`);
+    
+        let isValid = Validator.validate(
+            form, 
+            { [target.name]: loginFormConfig[target.name] },
+        );
+    
+        if(!isValid) {
+            let errors = Validator.getErrors(form.name)?.[target.name];
+            let errorMessage = Object.values(errors).map( message => `<p>${message}</p>`).join('');
+            errorChecker = true;
+            stateChecker(target, errorBox)
+            changeHTML(errorBox, errorMessage)
+    
+            return;
         }
+    
+        errorChecker = false;
+        successChecker = true;
+    
+        stateChecker(target);
+        changeHTML(errorBox, '')
     })
-
-    let isValid = Validator.validate(form, loginFormConfig);
-
-    if(!isValid) {
-        let errors = Validator.getErrors(form.name);
-
-        Object.entries(errors).forEach(([name, errorObject]) => {
-            let errorBox = form.querySelector(`[data-for="${name}"]`);
-            form.elements[name].classList.add('error');
-            errorBox.classList.add('error');
-
-            let fullMessage = Object.values(errorObject).map( message => `<p>${message}</p>`).join('');
-            errorBox.innerHTML = fullMessage;
-        });
-    };
-});
-
-
-form.addEventListener('input', (e) => {
-    let target = e.target;
-    let errorBox = form.querySelector(`[data-for="${target.name}"]`);
-
-    let isValid = Validator.validate(
-        form, 
-        { [target.name]: loginFormConfig[target.name] },
-    );
-
-    if(!isValid) {
-        let errors = Validator.getErrors(form.name)?.[target.name];
-        let fullMessage = Object.values(errors).map( message => `<p>${message}</p>`).join('');
-        target.classList.add('error');
-        errorBox.classList.add('error');
-        errorBox.innerHTML = fullMessage;
-
-        return;
+    
+    const stateChecker = (...elems) => {
+        for (const elem of elems) {
+            if (errorChecker) {
+                successChecker = false;
+                elem.classList.add('error');
+                elem.classList.remove('success');
+            } else if (successChecker) {
+                elem.classList.remove('error');
+                elem.classList.add('success')
+            } else {
+                elem.classList.remove('error');
+                elem.classList.remove('success')
+            }
+        }
     }
-
-    errorBox.innerHTML = '';
-    target.classList.remove('error');
-    target.classList.add('success')
+    
+    const changeHTML = (e, value) => {
+        e.innerHTML = value;
+    }
 })

@@ -13,54 +13,41 @@ export const Validator = {
             return {
                 validate: (value) =>  value.length <= length,
                 message: `Max length is ${length}.`,
-                errorType: 'max length',
+                errorType: 'maxLength',
             }
         },
         minLength(length) {
             return {
                 validate: (value) => value.length >= length,
                 message: `Min length is ${length}.`,
-                errorType: 'min length',
+                errorType: 'minLength',
             }
         },
-        emailCheck() {
-            return {
-                validate: (value) => {
-                    const emailPattern =  /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    return emailPattern.test(value)
-                },
-                message: 'Incorrect email type.',
-                errorType: 'email pattern',
-            }
+        emailCheck: {
+            validate: (value) => {
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailPattern.test(value)
+            },
+            message: 'Incorrect email type.',
+            errorType: 'emailPattern',
         },
-        hasLowerAndUpperCase() {
-            return {
-                validate: (value) => {
-                    const lowercaseRegex = /[a-z]/;
-                    const uppercaseRegex = /[A-Z]/;
-                    return lowercaseRegex.test(value) && uppercaseRegex.test(value);
-                },
-                message: 'This field should include at least 1 lowercase and 1 uppercase character.',
-                errorType: 'lowercase uppercase',
-            }
+        hasLowerCaseUpperCaseNumber: {
+            validate: (value) => {
+                const lowercaseRegex = /[a-z]/;
+                const uppercaseRegex = /[A-Z]/;
+                const numberRegex = /[0-9]/;
+                return lowercaseRegex.test(value) && uppercaseRegex.test(value) && numberRegex.test(value);
+            },
+            message: 'This field should include at least 1 lowercase, uppercase and number character.',
+            errorType: 'lowercaseUppercaseNumber',
         },
-        hasNumber() {
+        isEqualFields(originalField, fieldToValidate, fieldType = 'Fields',  form = document.login) {
             return {
-                validate: (value) => {
-                    const numberRegex = /[0-9]/;
-                    return numberRegex.test(value)
+                validate: () => {
+                    return form[originalField].value === form[fieldToValidate].value
                 },
-                message: 'This field should include at least 1 number character.',
-                errorType: 'number',
-            }
-        },
-        equalField(field, form = document.login) {
-            return {
-                validate: (value) => {
-                    return value === form[field].value;
-                },
-                message: `This field should be equal to ${form[field].name} field.`,
-                errorType: 'equal field',
+                message: `${fieldType} should be equal.`,
+                errorType: 'equalField',
             }
         }
     },
@@ -81,6 +68,7 @@ export const Validator = {
             if(!elements[inputName]) {
                 throw new ValidationError(`The "${inputName}" field doesn't exist in the "${form.name}"`);
             }
+
 
             const value = elements[inputName].value;
             let errors = this.errors[form.name];
@@ -107,4 +95,4 @@ export const Validator = {
     },
 }
 
-export const { isNotEmpty, maxLength, minLength, emailCheck, hasLowerAndUpperCase, hasNumber, equalField } = Validator.validators;
+export const { isNotEmpty, maxLength, minLength, emailCheck, hasLowerCaseUpperCaseNumber, isEqualFields } = Validator.validators;

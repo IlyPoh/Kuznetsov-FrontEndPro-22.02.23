@@ -10,7 +10,7 @@
     transition: background .2s ease,  box-shadow .2s ease;
 
     &:hover {
-        background: $color-dark-green;
+        background: $color-light-green;
         box-shadow: 0 0 5px 3px $color-shadow;
     }
 }
