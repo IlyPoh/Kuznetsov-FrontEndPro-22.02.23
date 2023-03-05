@@ -3,10 +3,33 @@ import { loginFormConfig } from './components/form-config.js';
 
 let forms = document.querySelectorAll('form');
 
+const setErrorState = (...elements) => {
+    for (const element of elements) {
+        element.classList.add('error');
+        element.classList.remove('success');
+    }
+};
+  
+const setSuccessState = (...elements) => {
+    for (const element of elements) {
+        element.classList.remove('error');
+        element.classList.add('success');
+    }
+};
+  
+const setNeutralState = (...elements) => {
+    for (const element of elements) {
+        element.classList.remove('error');
+        element.classList.remove('success');
+    }
+};
+
+const changeHTML = (e, value) => {
+    e.innerHTML = value;
+}
+
 forms.forEach((form) => {
     let elements = form.elements;
-    let errorChecker = false;
-    let successChecker = false;
     
     form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -15,10 +38,7 @@ forms.forEach((form) => {
             if(element.type !== 'submit') {
                 let errorBox = form.querySelector(`[data-for="${element.name}"]`);
     
-                errorChecker = false;
-                successChecker = false;
-    
-                stateChecker(element);
+                setNeutralState(element)
                 changeHTML(errorBox, '')
             }
         })
@@ -30,8 +50,7 @@ forms.forEach((form) => {
     
             Object.entries(errors).forEach(([name, errorObject]) => {
                 let errorBox = form.querySelector(`[data-for="${name}"]`);
-                errorChecker = true;
-                stateChecker(elements[name], errorBox);
+                setErrorState(elements[name], errorBox)
     
                 let errorMessage = Object.values(errorObject).map( message => `<p>${message}</p>`).join('');
                 changeHTML(errorBox, errorMessage)
@@ -52,37 +71,13 @@ forms.forEach((form) => {
         if(!isValid) {
             let errors = Validator.getErrors(form.name)?.[target.name];
             let errorMessage = Object.values(errors).map( message => `<p>${message}</p>`).join('');
-            errorChecker = true;
-            stateChecker(target, errorBox)
+            setErrorState(target, errorBox)
             changeHTML(errorBox, errorMessage)
     
             return;
         }
     
-        errorChecker = false;
-        successChecker = true;
-    
-        stateChecker(target);
+        setSuccessState(target);
         changeHTML(errorBox, '')
     })
-    
-    const stateChecker = (...elems) => {
-        for (const elem of elems) {
-            if (errorChecker) {
-                successChecker = false;
-                elem.classList.add('error');
-                elem.classList.remove('success');
-            } else if (successChecker) {
-                elem.classList.remove('error');
-                elem.classList.add('success')
-            } else {
-                elem.classList.remove('error');
-                elem.classList.remove('success')
-            }
-        }
-    }
-    
-    const changeHTML = (e, value) => {
-        e.innerHTML = value;
-    }
 })
