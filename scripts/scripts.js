@@ -1,32 +1,8 @@
 import { Validator } from './components/validator.js';
 import { loginFormConfig } from './components/form-config.js';
+import { setErrorState, setSuccessState, setNeutralState, changeHTML } from './components/helpers.js'
 
 let forms = document.querySelectorAll('form');
-
-const setErrorState = (...elements) => {
-    for (const element of elements) {
-        element.classList.add('error');
-        element.classList.remove('success');
-    }
-};
-  
-const setSuccessState = (...elements) => {
-    for (const element of elements) {
-        element.classList.remove('error');
-        element.classList.add('success');
-    }
-};
-  
-const setNeutralState = (...elements) => {
-    for (const element of elements) {
-        element.classList.remove('error');
-        element.classList.remove('success');
-    }
-};
-
-const changeHTML = (e, value) => {
-    e.innerHTML = value;
-}
 
 forms.forEach((form) => {
     let elements = form.elements;
