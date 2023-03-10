@@ -41,12 +41,12 @@ export const Validator = {
             message: 'This field should include at least 1 lowercase, uppercase and number character.',
             errorType: 'lowercaseUppercaseNumber',
         },
-        isEqualFields(originalField, fieldToValidate, fieldType = 'Fields',  form = document.login) {
+        isEqualFields(originalField, fieldToValidate, fieldsEqualityText = 'Fields should be equal',  form = document.login) {
             return {
                 validate: () => {
                     return form[originalField].value === form[fieldToValidate].value
                 },
-                message: `${fieldType} should be equal.`,
+                message: `${fieldsEqualityText}`,
                 errorType: 'equalField',
             }
         }

@@ -17,3 +17,7 @@ export const setSuccessState = (...elements) => setState('success', ...elements)
 export const setNeutralState = (...elements) => setState('neutral', ...elements);
 
 export const changeHTML = (e, value) => e.innerHTML = value;
+
+export const TEXTS = {
+    password: 'Passwords should be equal',
+}
