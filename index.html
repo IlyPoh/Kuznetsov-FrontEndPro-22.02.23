@@ -11,29 +11,29 @@
 <body>
     <div class="container">
         <div class="content">
-            <form class="form" name="login-form">
+            <form class="form" name="login">
                 <div class="form-title">Sign Up</div>
                 <div class="form-section">
                     <label for="" class="form-label">Username:</label>
                     <input type="text" class="form-input" name="username">
-                    <span class="form-span" for="username"></span>
+                    <span class="form-span" data-for="username"></span>
                 </div>
                 <div class="form-section">
                     <label for="" class="form-label">Email:</label>
                     <input type="email" class="form-input" name="email">
-                    <span class="form-span" for="email"></span>
+                    <span class="form-span" data-for="email"></span>
                 </div>
                 <div class="form-section">
                     <label for="" class="form-label">Password:</label>
                     <input type="password" class="form-input" name="password">
-                    <span class="form-span" for="password"></span>
+                    <span class="form-span" data-for="password"></span>
                 </div>
                 <div class="form-section">
                     <label for="" class="form-label">Confirm Password:</label>
-                    <input type="password" class="form-input" name="confirm-password">
-                    <span class="form-span" for="confirm-password"></span>
+                    <input type="password" class="form-input" name="confirm-password" placeholder="Reenter your password">
+                    <span class="form-span" data-for="confirm-password"></span>
                 </div>
-                <button id="submit" class="btn" type="submit">Sign Up</button>
+                <button name="submit" id="submit" class="btn" type="submit">Sign Up</button>
             </form>
         </div>
     </div>
