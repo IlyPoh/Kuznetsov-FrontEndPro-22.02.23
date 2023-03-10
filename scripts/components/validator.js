@@ -46,7 +46,7 @@ export const Validator = {
                 validate: () => {
                     return form[originalField].value === form[fieldToValidate].value
                 },
-                message: `${fieldsEqualityText}`,
+                message: fieldsEqualityText,
                 errorType: 'equalField',
             }
         }
